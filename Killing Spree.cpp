@@ -8,14 +8,22 @@ class Solution {
 public:
     long long int killinSpree(long long int n)
     {
-        int curr = 1, cnt = 0;
-        while (n >= curr * curr) {
-            n -= curr * curr;
-            ++curr;
-            ++cnt;
+        long long int lo = 1, hi = sqrt(n) + 1, mid;
+        
+        while (lo <= hi) {
+            mid = lo + (hi - lo) / 2;
+            long long int sum = mid * (mid + 1) * (2 * mid + 1) / 6;
+            
+            if (n == sum) {
+                return mid;
+            } else if (n > sum) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
         }
         
-        return cnt;
+        return hi;
     }
 };
 
