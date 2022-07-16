@@ -1,49 +1,48 @@
-// { Driver Code Starts
+//{ Driver Code Starts
 //Initial template for C++
 
-#include<bits/stdc++.h> 
-using namespace std; 
+#include <bits/stdc++.h>
+using namespace std;
 
- // } Driver Code Ends
+// } Driver Code Ends
 //User function template for C++
 
-class Solution{   
-public:
-    int findMinInsertions(string S){
-        int n = S.length();
-        vector<vector<int>> table(n, vector<int> (n, 0));
+class Solution{
+  public:
+    int countMin(string str) {
+        int n = str.length();
+        string rev(str.rbegin(), str.rend());
         
-        for (int i = n; i >= 0; --i) {
-            for (int j = i + 1; j < n; ++j) {
-                if (S[i] == S[j]) {
-                    if (i - j == 1) {
-                        table[i][j] = 0;
-                    } else {
-                        table[i][j] = table[i + 1][j - 1];
-                    }
+        vector<vector<int>> lcs(n + 1, vector<int> (n + 1, 0));
+        
+        for (int i = 0; i < n + 1; ++i) {
+            for (int j = 0; j < n + 1; ++j) {
+                if (i == 0 || j == 0) {
+                    continue;
+                } else if (str[i - 1] == rev[j - 1]) {
+                    lcs[i][j] = lcs[i - 1][j - 1] + 1;
                 } else {
-                    table[i][j] = 1 + min(table[i][j - 1], table[i + 1][j]);
+                    lcs[i][j] = max(lcs[i - 1][j], lcs[i][j - 1]);
                 }
             }
         }
         
-        return table[0][n - 1];
+        return n - lcs[n][n];
     }
 };
 
-// { Driver Code Starts.
-
-
-
+//{ Driver Code Starts.
 int main(){
     int t;
-    cin>>t;
+    cin >> t;
     while(t--){
-        string S;
-        cin>>S;
+        string str;
+        cin >> str;
         Solution ob;
-        cout<<ob.findMinInsertions(S)<<endl;
+        cout << ob.countMin(str) << endl;
     }
-    return 0;
+return 0;
 }
-  // } Driver Code Ends
+
+
+// } Driver Code Ends
